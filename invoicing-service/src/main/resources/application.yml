@@ -1,0 +1,40 @@
+spring:
+  resources:
+    static-locations: classpath:static/,file:static/
+  application:
+    name: invoicing-service-ship
+  datasource:
+    type:  com.zaxxer.hikari.HikariDataSource
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@10.10.253.224:1521:zjgdb
+    username: invoicing
+    password: 123456
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 6
+      idleTimeout: 300000
+      connectionTimeout: 60000
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.Oracle10gDialect
+server:
+  port: 9000
+  max-http-header-size: 1024000
+  #servlet:
+    #context-path: /api
+file:
+  upload: static/upload/
+logging:
+  config: classpath:log4j2.yml # 指定log4j配置文件的位置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+

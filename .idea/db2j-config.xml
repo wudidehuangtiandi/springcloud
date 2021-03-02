@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Db2jService">
+    <option name="config">
+      <map>
+        <entry key="history">
+          <value>
+            <Config>
+              <option name="author" value="" />
+              <option name="controllerPackage" value="src/main/java/" />
+              <option name="domainPackage" value="src/main/java/" />
+              <option name="templateType" value="Dto" />
+            </Config>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,57 @@
+server:
+  port: 10010
+spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+  application:
+    name: gateway
+  main:
+    #当遇到同样名字的时候，是否允许覆盖注册(springboot和cloud版本问题)
+    allow-bean-definition-overriding: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+zuul:
+  host:
+    connect-timeout-millis: 15000 #HTTP连接超时大于Hystrix的超时时间
+    socket-timeout-millis: 60000   #socket超时
+  prefix: /api
+  routes:
+    invoicing-service: /main/**
+    auth-service: /auth/**
+    userinformationandauthority-server: /getuserinfo/**
+    invoicing-service-ship: /ship/**
+  add-host-header: true  #允许携带请求头
+  sensitive-headers:     #空值覆盖敏感头信息使网关不过滤
+  set-content-length: true
+invoicing:
+  jwt:
+    pubKeyPath: D:/miyao/rsa.pub # 公钥地址
+    cookieName: INVOICING_TOKEN
+  #同意认证及路由服务通过，路由服务可以后期抽取
+  filter:
+    allowPaths:
+      - /api/auth
+      - /api/main/fileupload
+      - /api/main/upload
+      - /api/main/excelImport
+ribbon:        #设置ribbon的超时时间小于zuul的超时时间
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 160000
+#logging:
+  #level:
+    #com.netflix: DEBUG

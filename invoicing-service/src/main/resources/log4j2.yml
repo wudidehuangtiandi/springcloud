@@ -1,0 +1,58 @@
+Configuration:
+  status: warn
+
+  Properties: # 定义全局变量
+    Property: # 缺省配置（用于开发环境）。其他环境需要在VM参数中指定，如下：
+      #测试：-Dlog.level.console=warn -Dlog.level.zjgeport=trace
+      #生产：-Dlog.level.console=warn -Dlog.level.zjgeport=info
+        #下方这个会被最下面的级别覆盖，但是最下面配置的单独级别可以覆盖其本体！！！！！
+      - name: log.level.console  #无用
+        value: info
+
+      - name: log.level.zjgeport #有用
+        value: warn
+
+      - name: log.path
+        value: logs
+      - name: project.name
+        value: invoicing
+
+  Appenders:
+    Console:  #输出到控制台
+      name: CONSOLE
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        level: ${sys:log.level.console} # “sys:”表示：如果VM参数中没指定这个变量值，则使用本文件中定义的缺省全局变量值
+        onMatch: ACCEPT
+        onMismatch: DENY
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"
+    RollingFile: # 输出到文件，超过128MB归档
+      - name: ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/${project.name}.log
+        filePattern: "${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: "128 MB"
+        DefaultRolloverStrategy:
+          max: 1000
+
+#日志输出的级别,文件只记录error级别及以上的数据
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: CONSOLE
+        #- ref: ROLLING_FILE
+    Logger: # 为com.zjgeport包配置特殊的Log级别，方便调试
+      - name: com.zjgeport
+        additivity: false
+        level: ${sys:log.level.zjgeport}
+        AppenderRef:
+          - ref: CONSOLE
+          - ref: ROLLING_FILE
+
+

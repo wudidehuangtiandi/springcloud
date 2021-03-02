@@ -1,0 +1,41 @@
+server:
+  port: 10020
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+spring:
+  application:
+    name: invoicing-service-login
+  datasource:
+      type: com.zaxxer.hikari.HikariDataSource
+      driverClassName: oracle.jdbc.OracleDriver
+      #    url: jdbc:oracle:thin:@10.10.255.140:1521:ORCL
+      url: jdbc:oracle:thin:@10.10.254.221:1521:zjgdb1
+      username: portal
+      password: portal9792
+      hikari:
+        minimum-idle: 1
+        maximum-pool-size: 3
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        #hbm2ddl:
+        #auto: update
+        format_sql: false
+        dialect: org.hibernate.dialect.Oracle10gDialect
+  jackson:
+    parser:
+      allow_single_quotes: true
+      allow_unquoted_field_names: true
+
+

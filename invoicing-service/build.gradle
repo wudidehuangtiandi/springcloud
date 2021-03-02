@@ -1,0 +1,95 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+group = 'com.zjgeport'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+
+
+repositories {
+    maven {
+        url 'http://nexus.dev.zjgeport.com/repository/maven-public/'
+        credentials {
+            username = project.property("nexus.dev.username")
+            password = project.property("nexus.dev.password")
+        }
+    }
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: '4.2.2', classifier: 'jpa'
+    annotationProcessor group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.3.1.Final'
+    annotationProcessor group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+
+
+
+    implementation group: 'org.zjgeport.framework', name: 'spring-webmvc-support', version: '1.0.2-SNAPSHOT'
+    implementation group: 'org.zjgeport.framework', name: 'springdoc-openapi-support', version: '1.0-SNAPSHOT'
+
+    implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.3.1.Final'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '4.2.2'
+    implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.2.RELEASE') {
+        //exclude module: "spring-boot-starter-logging"
+//        exclude module: 'spring-boot-starter-tomcat'
+    }
+
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.2.2.RELEASE'
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.8.3'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'joda-time', name: 'joda-time', version: '2.10.5'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
+    //compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.2.2.RELEASE'
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+
+    runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
+    runtimeOnly group: 'com.oracle', name: 'ojdbc6', version: '11.2.0'
+
+    implementation "javax.xml.bind:jaxb-api:2.3.0"
+    implementation "com.sun.xml.bind:jaxb-impl:2.3.0"
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.2.26'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.2.RELEASE'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.0'
+
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.68'
+    compile group: 'org.apache.poi', name: 'poi', version: '3.17'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.17'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.2.2.RELEASE'
+
+    //排除springboot自带的日志配置。
+    configurations {
+        all*.exclude module : 'spring-boot-starter-logging'
+    }
+}
+ext {
+    set('springCloudVersion', "Hoxton.SR3")
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

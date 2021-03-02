@@ -1,0 +1,23 @@
+server:
+  port: 10011
+spring:
+  application:
+    name: auth-service
+  main:
+    #当遇到同样名字的时候，是否允许覆盖注册(springboot和cloud版本问题)
+    allow-bean-definition-overriding: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    registry-fetch-interval-seconds: 10
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+invoicing:
+  jwt:
+    secret: q1w2?!~aaa # 盐
+    pubKeyPath: D:/miyao/rsa.pub # 公钥地址
+    priKeyPath: D:/miyao/rsa.pri # 私钥地址
+    expire: 600 # 过期时间,单位分钟
+    cookieName: INVOICING_TOKEN

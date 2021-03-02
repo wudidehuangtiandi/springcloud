@@ -1,0 +1,67 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'com.gc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven {
+        url 'http://nexus.dev.zjgeport.com/repository/maven-public/'
+        credentials {
+            username = project.property("nexus.dev.username")
+            password = project.property("nexus.dev.password")
+        }
+    }
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR3")
+}
+
+dependencies {
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'org.zjgeport.framework', name: 'springdoc-openapi-support', version: '1.0-SNAPSHOT'
+    compile group: 'joda-time', name: 'joda-time', version: '2.10.5'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
+    compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.2.26'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    compileOnly 'org.projectlombok:lombok'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

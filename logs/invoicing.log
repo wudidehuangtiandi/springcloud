@@ -1,0 +1,3 @@
+2020-06-09 10:09:02,637:WARN http-nio-9000-exec-1 (ShipController.java:156) - 船舶查询,参数错误,存在必填字段为空
+2020-06-09 10:46:00,910:WARN http-nio-9000-exec-3 (ShipController.java:156) - 船舶查询,参数错误,存在必填字段为空
+2020-06-09 10:48:27,590:ERROR http-nio-9000-exec-6 (ShipController.java:171) - 船舶查询,服务器内部错误,该条记录或未审核
